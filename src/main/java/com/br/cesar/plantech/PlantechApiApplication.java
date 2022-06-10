@@ -40,27 +40,52 @@ public class PlantechApiApplication {
 	
 	@GetMapping("/hello")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) throws SQLException {
-		Connection conn = ConnectionFactory.getConnection();
-		assert conn != null;
-		Statement stmt = conn.createStatement();
-		String sql = "SELECT * FROM questions";
-		ResultSet rs = stmt.executeQuery(sql);
 
-		while (rs.next()) {
-			System.out.println(rs.getString("text_is"));
-		}
 		return String.format("Hello %s!", name);
 	}
 	
 	@GetMapping("/Questions")
-	public Map<String, Object> questions() {
+	public Map<String, Object> questions() throws SQLException {
 		//json structure
-		Map<String, Object> questions = new LinkedHashMap<>();
-		Map<String, Object> question = new LinkedHashMap<>();
-		ArrayList<Map<String,String>> alternatives = new ArrayList<>();
-		Map<String,String> alternative = new LinkedHashMap<>();
+//		Map<String, Object> questions = new LinkedHashMap<>();
+//		Map<String, Object> question = new LinkedHashMap<>();
+//		ArrayList<Map<String,String>> alternatives = new ArrayList<>();
+//		Map<String,String> alternative = new LinkedHashMap<>();
 
+		Connection conn = ConnectionFactory.getConnection();
+		assert conn != null;
 
-		return questions;
+		Statement stmt = conn.createStatement();
+		String sqlQuestions = "SELECT * FROM questions";
+		ResultSet resultQuestions = stmt.executeQuery(sqlQuestions);
+
+		ArrayList<Object> questions = new ArrayList<>();
+		while (resultQuestions.next()) {
+			String idQuestion = resultQuestions.getString("id");
+			String textQ = resultQuestions.getString("text_is");
+			String group_responses = resultQuestions.getString("id_responses");
+
+			String sqlAlternatives = "SELECT * FROM responses WHERE group_at = " + idQuestion;
+			Statement stmtAl = conn.createStatement();
+			ResultSet resultAlternatives = stmtAl.executeQuery(sqlAlternatives);
+			ArrayList<Map<String,String>> alternatives = new ArrayList<>();
+			while (resultAlternatives.next()) {
+				Map<String, String> alternative = new LinkedHashMap<>();
+
+				alternative.put("id", resultAlternatives.getString("id"));
+				alternative.put("title", resultAlternatives.getString("text_is"));
+				alternative.put("points", resultAlternatives.getString("point_at"));
+				alternatives.add(alternative);
+			}
+
+			Map<String,Object> question = new LinkedHashMap<>();
+			question.put("id", idQuestion);
+			question.put("title", textQ);
+			question.put("alternatives",alternatives);
+			questions.add(question);
+		}
+		Map<String,Object> finalJson = new LinkedHashMap<>();
+		finalJson.put("questions", questions);
+		return finalJson;
 	}
 }
