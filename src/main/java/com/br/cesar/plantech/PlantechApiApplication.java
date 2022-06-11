@@ -122,23 +122,21 @@ public class PlantechApiApplication {
 		}
 		
 		int finalValue = ResponseCalc.findResponse(amountResultPlants);
+		
+		assert conn != null;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		Statement stmt = conn.createStatement();
+		String sqlPlant = "SELECT * FROM plant where id = '"+(finalValue+1)+"';";
+		ResultSet resultPlants = stmt.executeQuery(sqlPlant);
+		
+		String idPlant = resultPlants.getString("id");
+		String namePlant = resultPlants.getString("name");
+		String scientificNamePlant = resultPlants.getString("other");
+		String describePlant = resultPlants.getString("describe_is");
+		String imagePlant = resultPlants.getString("image");
 
 		Map<String, String> plant = new LinkedHashMap<>();
+		plant.put("id", idPlant);
 		plant.put("name", namePlant);
 		plant.put("scientificName", scientificNamePlant);
 		plant.put("describe", describePlant);
