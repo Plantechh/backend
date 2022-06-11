@@ -5,6 +5,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +22,7 @@ import java.util.Map;
 @RestController
 public class PlantechApiApplication {
 	public static Dotenv dotenv = null;
+	protected static Connection conn = null;
 
 	public static void main(String[] args) { 
 		try {
@@ -28,8 +31,9 @@ public class PlantechApiApplication {
 			        .ignoreIfMalformed()
 			        .ignoreIfMissing()
 			        .load();
-
-			Connection conn = ConnectionFactory.getConnection();
+			
+			conn = ConnectionFactory.getConnection();
+			
 			System.out.println("DB CONNECTION "+ conn.getCatalog());
 
 			SpringApplication.run(PlantechApiApplication.class, args);
@@ -44,15 +48,15 @@ public class PlantechApiApplication {
 		return String.format("Hello %s!", name);
 	}
 	
-	@GetMapping("/Questions")
-	public Map<String, Object> questions() throws SQLException {
+	@GetMapping("/get/questions")
+	public Map<String, Object> getQuestions() throws SQLException {
 		//json structure
 //		Map<String, Object> questions = new LinkedHashMap<>();
 //		Map<String, Object> question = new LinkedHashMap<>();
 //		ArrayList<Map<String,String>> alternatives = new ArrayList<>();
 //		Map<String,String> alternative = new LinkedHashMap<>();
 
-		Connection conn = ConnectionFactory.getConnection();
+//		Connection conn = ConnectionFactory.getConnection();
 		assert conn != null;
 
 		Statement stmt = conn.createStatement();
@@ -87,5 +91,14 @@ public class PlantechApiApplication {
 		Map<String,Object> finalJson = new LinkedHashMap<>();
 		finalJson.put("questions", questions);
 		return finalJson;
+	}
+
+	@PostMapping("/find/response")
+	public Map<String, Object> findResponse(@RequestBody Map<String, Object> body) throws SQLException {
+		
+		
+		
+		
+		return body;
 	}
 }
