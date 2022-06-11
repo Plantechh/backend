@@ -120,7 +120,9 @@ public class PlantechApiApplication {
 
 			}
 		}
-
+		
+		int finalValue = ResponseCalc.findResponse(amountResultPlants);
+		
 		return body;
 	}
 }
