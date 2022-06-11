@@ -96,9 +96,31 @@ public class PlantechApiApplication {
 	@PostMapping("/find/response")
 	public Map<String, Object> findResponse(@RequestBody Map<String, Object> body) throws SQLException {
 		
-		
-		
-		
+		ArrayList<Map<String,String>> responsesQuestions = (ArrayList<Map<String, String>>) body.get("questions");
+		int[] amountResultPlants = new int[4];
+
+		for (Map<String,String> responses : responsesQuestions) {
+			//String idQuestions = responses.get("id_question");
+			String response = responses.get("response");
+
+			switch (response) {
+				case ("1"):
+					amountResultPlants[0]++;
+
+				case ("2"):
+					amountResultPlants[1]++;
+
+				case ("3"):
+					amountResultPlants[2]++;
+
+				case ("4"):
+					amountResultPlants[3]++;
+
+				default:
+
+			}
+		}
+
 		return body;
 	}
 }
