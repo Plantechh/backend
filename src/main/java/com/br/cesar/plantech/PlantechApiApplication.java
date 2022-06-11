@@ -106,16 +106,16 @@ public class PlantechApiApplication {
 			switch (response) {
 				case ("1"):
 					amountResultPlants[0]++;
-
+					break;
 				case ("2"):
 					amountResultPlants[1]++;
-
+					break;
 				case ("3"):
 					amountResultPlants[2]++;
-
+					break;
 				case ("4"):
 					amountResultPlants[3]++;
-
+					break;
 				default:
 
 			}
@@ -126,21 +126,22 @@ public class PlantechApiApplication {
 		assert conn != null;
 
 		Statement stmt = conn.createStatement();
-		String sqlPlant = "SELECT * FROM plant where id = '"+(finalValue+1)+"';";
+		String sqlPlant = "SELECT * FROM plants where id = " + (finalValue+1);
 		ResultSet resultPlants = stmt.executeQuery(sqlPlant);
-		
-		String idPlant = resultPlants.getString("id");
-		String namePlant = resultPlants.getString("name");
-		String scientificNamePlant = resultPlants.getString("other");
-		String describePlant = resultPlants.getString("describe_is");
-		String imagePlant = resultPlants.getString("image");
-
 		Map<String, String> plant = new LinkedHashMap<>();
-		plant.put("id", idPlant);
-		plant.put("name", namePlant);
-		plant.put("scientificName", scientificNamePlant);
-		plant.put("describe", describePlant);
-		plant.put("image", imagePlant);
+
+		while (resultPlants.next()) {
+			String idPlant = resultPlants.getString("id");
+			String namePlant = resultPlants.getString("name");
+			String scientificNamePlant = resultPlants.getString("other");
+			String describePlant = resultPlants.getString("describe_is");
+			String imagePlant = resultPlants.getString("image");
+			plant.put("id", idPlant);
+			plant.put("name", namePlant);
+			plant.put("scientificName", scientificNamePlant);
+			plant.put("describe", describePlant);
+			plant.put("image", imagePlant);
+		}
 
 		return plant;
 	}
