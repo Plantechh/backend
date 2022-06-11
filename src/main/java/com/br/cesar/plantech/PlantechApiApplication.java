@@ -94,7 +94,7 @@ public class PlantechApiApplication {
 	}
 
 	@PostMapping("/find/response")
-	public Map<String, Object> findResponse(@RequestBody Map<String, Object> body) throws SQLException {
+	public Map<String, String> findResponse(@RequestBody Map<String, Object> body) throws SQLException {
 		
 		ArrayList<Map<String,String>> responsesQuestions = (ArrayList<Map<String, String>>) body.get("questions");
 		int[] amountResultPlants = new int[4];
@@ -122,7 +122,28 @@ public class PlantechApiApplication {
 		}
 		
 		int finalValue = ResponseCalc.findResponse(amountResultPlants);
-		
-		return body;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		Map<String, String> plant = new LinkedHashMap<>();
+		plant.put("name", namePlant);
+		plant.put("scientificName", scientificNamePlant);
+		plant.put("describe", describePlant);
+		plant.put("image", imagePlant);
+
+		return plant;
 	}
 }
