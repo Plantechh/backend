@@ -4,6 +4,7 @@ import com.br.cesar.plantech.db.ConnectionFactory;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -92,7 +93,8 @@ public class PlantechApiApplication {
 		finalJson.put("questions", questions);
 		return finalJson;
 	}
-
+	
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@PostMapping("/find/response")
 	public Map<String, String> findResponse(@RequestBody Map<String, Object> body) throws SQLException {
 		
