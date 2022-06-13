@@ -1,0 +1,12 @@
+[Unit]
+Description="Plantech Front-end"
+
+[Service]
+WorkingDirectory=/opt/frontend/
+ExecStart=serve -s build
+Restart=always
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

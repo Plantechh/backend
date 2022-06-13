@@ -1,0 +1,13 @@
+#!/bin/sh -
+[Unit]
+Description="Plantech Back-end"
+
+[Service]
+WorkingDirectory=/opt/backend/
+ExecStart=/opt/backend/mvnw spring-boot:run
+Restart=always
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
