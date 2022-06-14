@@ -43,12 +43,14 @@ public class PlantechApiApplication {
 		}
 	}
 	
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@GetMapping("/hello")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) throws SQLException {
 
 		return String.format("Hello %s!", name);
 	}
 	
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@GetMapping("/get/questions")
 	public Map<String, Object> getQuestions() throws SQLException {
 		//json structure
